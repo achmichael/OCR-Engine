@@ -318,7 +318,6 @@ Examples:
     elif args.gui:
         launch_gui()
     else:
-        # Default ke web API
         debug_mode = not args.no_debug
         launch_web_api(args.host, args.port, debug_mode)
 
