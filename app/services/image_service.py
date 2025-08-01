@@ -97,24 +97,19 @@ class ImageService:
             config = self.enhancement_configs[level]
             enhanced_image = image.copy()
             
-            # Convert ke OpenCV format untuk advanced processing
             cv_image = np.array(enhanced_image)
             cv_image = cv2.cvtColor(cv_image, cv2.COLOR_RGB2BGR)
             
-            # 1. Denoising
             cv_image = cv2.fastNlMeansDenoisingColored(
                 cv_image, None, config['denoise_strength'], config['denoise_strength'], 7, 21
             )
             
-            # 2. Convert back ke PIL untuk further processing
             cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
             enhanced_image = Image.fromarray(cv_image)
             
-            # 3. Contrast enhancement
             contrast_enhancer = ImageEnhance.Contrast(enhanced_image)
             enhanced_image = contrast_enhancer.enhance(config['contrast_factor'])
             
-            # 4. Brightness adjustment
             brightness_enhancer = ImageEnhance.Brightness(enhanced_image)
             enhanced_image = brightness_enhancer.enhance(config['brightness_factor'])
             
