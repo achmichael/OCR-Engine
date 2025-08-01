@@ -1,0 +1,42 @@
+# Dependensi untuk OCR ML Engine - Updated Architecture
+# =====================================================
+
+# Core OCR dan Computer Vision
+opencv-python==4.8.1.78        # Library untuk computer vision dan image processing
+Pillow==9.5.0                   # Library untuk manipulasi gambar (kompatibel dengan EasyOCR)
+numpy==1.26.0                   # Library untuk operasi numerik dan array
+
+# OCR Engines
+pytesseract==0.3.10             # Python wrapper untuk Tesseract OCR
+easyocr==1.7.0                  # OCR library yang mudah digunakan dengan support multiple languages
+
+# PDF Processing
+PyPDF2==3.0.1                   # Library untuk manipulasi PDF (note: capital P)
+pdf2image==1.16.3               # Converter PDF ke image
+
+# Web Framework
+Flask==2.3.3                    # Lightweight web framework untuk API
+Flask-CORS==4.0.0               # CORS support untuk Flask
+Werkzeug==2.3.7                 # Web utilities untuk Flask
+
+# File handling dan validation
+python-magic==0.4.27            # File type detection
+python-magic-bin==0.4.14        # Windows binary untuk python-magic
+
+# System monitoring
+psutil==5.9.5                   # System dan process monitoring
+
+# Utilities
+requests==2.31.0                # HTTP library
+python-dotenv==1.0.0            # Environment variable management
+
+# Optional: Machine Learning dan Advanced Processing
+scikit-image==0.21.0            # Advanced image processing
+matplotlib==3.7.2               # Visualization library
+
+# Development dan Testing
+pytest==7.4.2                   # Testing framework
+pytest-cov==4.1.0               # Coverage reporting untuk pytest
+
+# Optional: Production deployment
+gunicorn==21.2.0                 # WSGI HTTP Server untuk production
