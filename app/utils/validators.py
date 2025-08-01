@@ -9,10 +9,21 @@ Date: August 2025
 """
 
 import os
-import magic
 from typing import Dict, Any, List, Optional
 from werkzeug.datastructures import FileStorage
 from flask import Request
+
+# Safe import untuk python-magic (bisa menyebabkan segfault di Windows)
+# Temporarily disabled karena menyebabkan segfault
+MAGIC_AVAILABLE = False
+# try:
+#     import magic
+#     MAGIC_AVAILABLE = True
+# except ImportError:
+#     MAGIC_AVAILABLE = False
+# except Exception:
+#     # Jika ada error lain saat import magic (seperti segfault), disable
+#     MAGIC_AVAILABLE = False
 
 
 def validate_request(request: Request, file_required: bool = False, files_required: bool = False) -> Dict[str, Any]:
@@ -144,40 +155,39 @@ def validate_file(file: FileStorage, file_type: str, config: Dict[str, Any]) -> 
                 'message': 'File is empty'
             }
         
-        # Validate MIME type jika python-magic tersedia
-        try:
-            # Read a small chunk untuk MIME detection
-            file.seek(0)
-            chunk = file.read(1024)
-            file.seek(0)  # Reset position
-            
-            if chunk:
-                mime_type = magic.from_buffer(chunk, mime=True)
-                
-                if file_type == 'image':
-                    valid_mimes = {
-                        'image/jpeg', 'image/jpg', 'image/png', 'image/bmp', 
-                        'image/tiff', 'image/gif', 'image/webp'
-                    }
-                    if mime_type not in valid_mimes:
-                        return {
-                            'valid': False,
-                            'message': f'Invalid image MIME type: {mime_type}'
-                        }
-                
-                elif file_type == 'pdf':
-                    if mime_type != 'application/pdf':
-                        return {
-                            'valid': False,
-                            'message': f'Invalid PDF MIME type: {mime_type}'
-                        }
-            
-        except ImportError:
-            # python-magic not available, skip MIME validation
-            pass
-        except Exception:
-            # MIME detection failed, continue without it
-            pass
+        # Validate MIME type jika python-magic tersedia dan aman
+        # Temporarily disabled karena python-magic menyebabkan segfault di Windows
+        # if MAGIC_AVAILABLE:
+        #     try:
+        #         # Read a small chunk untuk MIME detection
+        #         file.seek(0)
+        #         chunk = file.read(1024)
+        #         file.seek(0)  # Reset position
+        #         
+        #         if chunk:
+        #             mime_type = magic.from_buffer(chunk, mime=True)
+        #             
+        #             if file_type == 'image':
+        #                 valid_mimes = {
+        #                     'image/jpeg', 'image/jpg', 'image/png', 'image/bmp', 
+        #                     'image/tiff', 'image/gif', 'image/webp'
+        #                 }
+        #                 if mime_type not in valid_mimes:
+        #                     return {
+        #                         'valid': False,
+        #                         'message': f'Invalid image MIME type: {mime_type}'
+        #                     }
+        #             
+        #             elif file_type == 'pdf':
+        #                 if mime_type != 'application/pdf':
+        #                     return {
+        #                         'valid': False,
+        #                         'message': f'Invalid PDF MIME type: {mime_type}'
+        #                     }
+        #         
+        #     except Exception:
+        #         # MIME detection failed, continue without it
+        #         pass
         
         return {
             'valid': True,
